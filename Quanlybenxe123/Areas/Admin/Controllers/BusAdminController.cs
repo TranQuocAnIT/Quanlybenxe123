@@ -1,13 +1,13 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Quanlybenxe123.Models;
 using Quanlybenxe123.Repository;
+using System.Threading.Tasks;
 
 namespace Quanlybenxe123.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [Authorize(Roles = "Admin")]
- 
     public class BusAdminController : Controller
     {
         private readonly IBusRepository _busRepository;
@@ -17,14 +17,12 @@ namespace Quanlybenxe123.Areas.Admin.Controllers
             _busRepository = busRepository;
         }
 
-        // Hiển thị danh sách xe bus
         public async Task<IActionResult> Index()
         {
             var buses = await _busRepository.GetAllAsync();
             return View(buses);
         }
 
-        // Hiển thị form thêm xe bus mới
         public IActionResult Add()
         {
             return View();
@@ -42,7 +40,6 @@ namespace Quanlybenxe123.Areas.Admin.Controllers
             return View(bus);
         }
 
-        // Hiển thị thông tin chi tiết xe bus
         public async Task<IActionResult> Display(int id)
         {
             var bus = await _busRepository.GetByIdAsync(id);
@@ -53,7 +50,6 @@ namespace Quanlybenxe123.Areas.Admin.Controllers
             return View(bus);
         }
 
-        // Hiển thị form cập nhật xe bus
         public async Task<IActionResult> Update(int id)
         {
             var bus = await _busRepository.GetByIdAsync(id);
@@ -81,7 +77,6 @@ namespace Quanlybenxe123.Areas.Admin.Controllers
             return View(bus);
         }
 
-        // Hiển thị form xác nhận xóa xe bus
         public async Task<IActionResult> Delete(int id)
         {
             var bus = await _busRepository.GetByIdAsync(id);

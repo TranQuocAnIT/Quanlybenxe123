@@ -15,7 +15,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // For SQLite, use this instead:
 // options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
 
@@ -30,7 +29,6 @@ builder.Services.AddScoped<IBookingRepository, EFBookingRepository>();
 builder.Services.AddScoped<IStopRepository, EFStopRepository>();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -47,9 +45,17 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
 app.MapRazorPages();
 
 app.Run();
